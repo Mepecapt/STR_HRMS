@@ -1,32 +1,19 @@
-import db from "./firebase";
-import { ref, getDocs, collection} from "firebase/firestore";
+import React from 'react'
 
-// Function to fetch data from Firebase
-async function FirebaseDataComponent() {
-  try {
-    // Specify the path to your data
-    const snapshot = await getDocs(collection(db, 'admin'));
-    const adminList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    if (snapshot.exists()) {
-      console.log(adminList);
-    } else {
-      console.log("No data available");
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
+function Test() {
 
-  return <></>
+  // const auth = getAuth()
+  // const user = auth.currentuser()
+  // const userID = user.uid
+  const currTime = new Date().toLocaleTimeString();
+  // const docID = userID + currTime
+
+  console.log(currTime);
+  
+
+  return (
+    <div>Test</div>
+  )
 }
 
-const App2 = () => {
-    return (
-      <div>
-        <h1>Firebase Data Fetch Example</h1>
-        <FirebaseDataComponent />
-      </div>
-    );
-  };
-
-// Call the function
-export default App2
+export default Test

@@ -50,7 +50,7 @@ import Spinner from "../../views/pages/Ui_Interface/Components/Spinner";
 import Tooltips from "../../views/pages/Ui_Interface/Components/Tooltip";
 import ComingSoon from "../../views/pages/Pages/ComingSoon";
 import UnderManitenance from "../../views/pages/Pages/UnderManitenance";
-import App2 from "../../test";
+import Test from "../../test";
 import Cookies from "js-cookie"
 import { onAuthStateChanged } from "firebase/auth";
 import { getAuth } from "firebase/auth";
@@ -61,9 +61,7 @@ const ScrollToTop = () => {
 
   const auth = getAuth();
   onAuthStateChanged(auth, (admin) => {
-    if (pathname == "/" && admin){
-      navigate('/admin-dashboard')
-    }else if (pathname == "/admin-dashboard" && !admin){
+    if (pathname == "/admin-dashboard" && !admin){
       navigate("/")
     }
   });
@@ -140,7 +138,7 @@ const AppRouter = () => {
             <Route path="/spinner" element={<Spinner />} />
             <Route path="/*" element={<AppContainer />} />
             <Route path="*" element={<Navigate to="/" />} /> 
-            <Route path="/test" element={<App2 />} />
+            <Route path="/test" element={<Test />} />
           </Routes>
         </BrowserRouter>
       </Provider>

@@ -1,6 +1,25 @@
 import React from "react";
+import { useForm } from "react-hook-form";
+import db from "../../firebase"
+import { doc, setDoc } from "firebase/firestore"
+import { getAuth } from "firebase/auth";
+import { fetcher, create_docID } from "../../firebase_utils/fetchData"
 
 const DepartmentModal = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm()
+
+  const docID = create_docID()
+
+  const addDepart = async (data) => {
+    try {
+      const newDocRef = doc(db, 'department', docID)
+      await setDoc(newDocRef, {department: data.department})
+      console.log("Department added successfully");
+    } catch (e) {
+      console.error("Error adding department: ", e);
+    }
+  };
+
   return (
     <>
       {/* Add Department Modal */}
@@ -23,19 +42,19 @@ const DepartmentModal = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form onSubmit={handleSubmit(addDepart)}>
                 <div className="input-block mb-3">
                   <label className="col-form-label">
                     Department Name <span className="text-danger">*</span>
                   </label>
-                  <input className="form-control" type="text" />
+                  <input className="form-control" type="text" name="department" {...register('department', {required: true})}/>
                 </div>
                 <div className="submit-section">
                   <button
                     className="btn btn-primary submit-btn"
                     data-bs-dismiss="modal"
                     aria-label="Close"
-                    type="reset"
+                    type="submit"
                   >
                     Submit
                   </button>
@@ -98,3 +117,4 @@ const DepartmentModal = () => {
 };
 
 export default DepartmentModal;
+

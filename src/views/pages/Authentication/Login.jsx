@@ -12,6 +12,7 @@ import { resetFunctionwithlogin } from "../../../components/ResetFunction";
 import { getDocs, collection } from "firebase/firestore";
 import db, { auth } from "../../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth,  } from "firebase/auth";
 // import { login } from "../../../user";
 
 const validationSchema = Yup.object().shape({
@@ -26,6 +27,9 @@ const validationSchema = Yup.object().shape({
 
 const Login = () => {
   const [admin, setAdmin] = useState(null)
+
+  const auth = getAuth()
+  const user = auth.currentUser
 
   const getAdmin = async () => {
     const adminCollection = collection(db, "admin");
@@ -212,12 +216,16 @@ const Login = () => {
                         </button>
                       </div>
                     </form>
+                    { !user ? 
                     <div className="account-footer">
-                      <p>
-                        Don't have an account yet?{" "}
-                        <Link to="/register">Register</Link>
-                      </p>
-                    </div>
+                    <p>
+                      Don't have an account yet?{" "}
+                      <Link to="/register">Register</Link>
+                    </p>
+                  </div>
+                    : 
+                    <></>
+                    }
                   </div>
                   {/* /Account Form */}
                 </div>

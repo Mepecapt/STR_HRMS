@@ -1,7 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import Select from "react-select";
+import { useForm } from "react-hook-form";
+import db from "../../firebase"
+import { doc, setDoc } from "firebase/firestore"
+import { getAuth } from "firebase/auth";
+import { create_docID } from "../../firebase_utils/fetchData";
 
 const AddDesingnationModelPopup = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm()
+  const [desigs, setDesigs] = useState(null)
+
+  const docID = create_docID() 
+
+  const addDesig = async (data) => {
+    try {
+      const newDocRef = doc(db, 'designation', docID)
+      await setDoc(newDocRef, {department: data.designation})
+      console.log("Department added successfully");
+    } catch (e) {
+      console.error("Error adding department: ", e);
+    }
+  };
+
   const designation = [
     { value: 1, label: "Select Department" },
     { value: 2, label: "Web Development" },
@@ -40,14 +60,14 @@ const AddDesingnationModelPopup = () => {
               </button>
             </div>
             <div className="modal-body">
-              <div>
+              <form onSubmit={handleSubmit(addDesig)}>
                 <div className="input-block mb-3">
                   <label className="col-form-label">
                     Designation Name <span className="text-danger">*</span>
                   </label>
-                  <input className="form-control" type="text" />
+                  <input className="form-control" type="text" name="designation" {...register('designation', {required: true})} />
                 </div>
-                <div className="input-block mb-3">
+                {/* <div className="input-block mb-3">
                   <label className="col-form-label">
                     Department <span className="text-danger">*</span>
                   </label>
@@ -56,18 +76,21 @@ const AddDesingnationModelPopup = () => {
                     options={designation}
                     placeholder="Select Department"
                     styles={customStyles}
+                    name="desig_depart"
+                    {...register('desig_depart', {required: true})}
                   />
-                </div>
+                </div> */}
                 <div className="submit-section">
                   <button
                     className="btn btn-primary submit-btn"
                     data-bs-dismiss="modal"
                     aria-label="Close"
+                    type="submit"
                   >
                     Submit
                   </button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>

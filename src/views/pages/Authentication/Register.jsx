@@ -62,11 +62,18 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     const existingUser = admin.find(user => user.email === data.email);
-
-    console.log(existingUser);
     
-
     if (!existingUser) {
+      try {
+        await addDoc(collection(db, 'user'), {
+          email: data.email,
+          password: data.password,
+          role: 'admin',
+        })
+      } catch (error) {
+        
+      }
+
       try {
         await createUserWithEmailAndPassword(auth, data.email, data.password)
         .then((userCredential) => {
